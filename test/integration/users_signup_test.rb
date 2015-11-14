@@ -10,6 +10,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 														  password_confirmation: "foo"}
 		end
 		assert_template 'users/new'
+		assert_select 'div#error_explaination'
+		assert_select 'li', "Name can't be blank"
+
 	end
 
 	test "Successful user signup" do
@@ -21,5 +24,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 																					  password_confirmation: "123456789"}
 			end
 			assert_template 'users/show'
+			assert_select 'div.alert-success', "Welcome to the Sample App"
+			assert_not flash.empty?
 	end
 end
