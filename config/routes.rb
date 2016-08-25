@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   
+  get 'password_resets/new'
+
+  get 'password_resets/edit'
+
   get 'session/new'
 
   get 'user/new'
@@ -14,7 +18,19 @@ Rails.application.routes.draw do
 
   get 'signup' => 'users#new'
 
-  resources :users
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+
+  resources :account_activation, only: [:edit]
+
+  resources :password_resets, only: [:edit, :new, :create, :update]
+
+  resources :microposts, only: [:create, :destroy]
+
+  resources :relationships, only: [:create, :destroy]
 
   get 'login' => 'sessions#new'
 
@@ -23,3 +39,4 @@ Rails.application.routes.draw do
   delete 'logout' => 'sessions#destroy'
 
 end
+
